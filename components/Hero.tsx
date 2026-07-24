@@ -6,7 +6,7 @@ import { Wordmark } from "@/components/Wordmark";
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
+    <section id="top" className="relative scroll-mt-16 overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -right-[18%] top-1/2 hidden -translate-y-1/2 lg:block">
           <LogoGlyph className="h-[46rem] w-auto text-ink/[0.04]" />
@@ -16,7 +16,7 @@ export function Hero() {
 
       <div className="mx-auto grid max-w-6xl items-center gap-y-16 px-6 pb-24 pt-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-x-14 lg:pb-32 lg:pt-20">
         <div>
-          <p className="animate-rise flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-accent">
+          <p className="animate-rise flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-accent-ink">
             <span className="hairline h-px w-10" />
             Presto su web
           </p>
@@ -45,7 +45,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="animate-rise flex justify-center [animation-delay:420ms] lg:justify-end">
+        <div className="animate-rise flex min-w-0 justify-center [animation-delay:420ms] lg:justify-end">
           <PhoneFrame label="Anteprima della schermata Armadio: saluto, meteo di Milano, prossimo evento e outfit suggerito.">
             <HomeScreen />
           </PhoneFrame>

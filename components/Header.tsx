@@ -15,7 +15,7 @@ export function Header() {
         </a>
         <a
           href="#waitlist"
-          className="group flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-ink transition-colors hover:text-accent"
+          className="group flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-ink transition-colors hover:text-accent-ink"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           Waitlist

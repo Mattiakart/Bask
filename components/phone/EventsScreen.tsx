@@ -16,7 +16,7 @@ export function EventsScreen() {
     <div className="flex h-full flex-col px-5 pt-3">
       <div className="flex items-center justify-between">
         <LogoGlyph className="h-[18px] w-auto text-ink" />
-        <p className="text-[13px] font-semibold tracking-tight text-ink">I miei eventi</p>
+        <p className="text-[13px] font-semibold text-ink">I miei eventi</p>
         <PlusIcon className="h-[18px] w-[18px] text-ink-soft" />
       </div>
 
@@ -52,7 +52,7 @@ export function EventsScreen() {
         {TODAY.map((event) => (
           <li key={event.title} className="flex items-start justify-between">
             <div>
-              <p className="text-[13px] font-semibold tracking-tight text-ink">{event.title}</p>
+              <p className="text-[13px] font-semibold text-ink">{event.title}</p>
               <p className="mt-0.5 text-[10px] text-muted">{event.time}</p>
               <p className="mt-1 flex items-center gap-1 text-[10px] text-muted">
                 <PinIcon className="h-3 w-3" />
@@ -76,10 +76,10 @@ export function EventsScreen() {
         <ScreenLabel>Questa settimana</ScreenLabel>
         <div className="mt-3 flex items-center justify-between rounded-2xl bg-[#e7e3dc] px-3.5 py-3">
           <div>
-            <p className="text-[12px] font-semibold tracking-tight text-ink">Matrimonio</p>
+            <p className="text-[12px] font-semibold text-ink">Matrimonio</p>
             <p className="mt-0.5 text-[10px] text-ink-soft">Sabato 24 Maggio • 18:00</p>
           </div>
-          <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-accent">3 idee</p>
+          <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-accent-ink">3 idee</p>
         </div>
       </div>
 

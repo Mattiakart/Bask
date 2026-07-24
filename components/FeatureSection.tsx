@@ -22,9 +22,9 @@ export function FeatureSection({
   return (
     <section className="border-t border-line/70">
       <div className="mx-auto grid max-w-6xl items-center gap-y-12 px-6 py-20 lg:grid-cols-2 lg:gap-x-16 lg:py-28">
-        <Reveal className={flip ? "lg:order-2" : undefined}>
+        <Reveal className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
           <p className="flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted">
-            <span className="font-display text-accent">{index}</span>
+            <span className="font-display text-accent-ink">{index}</span>
             <span className="h-px w-8 bg-line" />
             {eyebrow}
           </p>
@@ -45,8 +45,8 @@ export function FeatureSection({
         </Reveal>
 
         <Reveal
-          delay={120}
-          className={`flex justify-center ${flip ? "lg:order-1 lg:justify-start" : "lg:justify-end"}`}
+          shift={6}
+          className={`flex min-w-0 justify-center ${flip ? "lg:order-1 lg:justify-start" : "lg:justify-end"}`}
         >
           {visual}
         </Reveal>

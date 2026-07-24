@@ -21,19 +21,12 @@ export function Hairline({ className }: { className?: string }) {
 export function ItemTile({
   kind,
   tone,
-  className,
-  size = "md",
 }: {
   kind: GarmentKind;
   tone?: GarmentTone;
-  className?: string;
-  size?: "sm" | "md" | "lg";
 }) {
-  const box = size === "sm" ? "h-11 w-11" : size === "lg" ? "h-[68px] w-[68px]" : "h-14 w-14";
   return (
-    <span
-      className={`flex ${box} items-center justify-center rounded-[10px] bg-[#f1f0ee] ring-1 ring-line ${className ?? ""}`}
-    >
+    <span className="flex aspect-square w-full items-center justify-center rounded-[10px] bg-[#f1f0ee] ring-1 ring-line">
       <Garment kind={kind} tone={tone} className="h-[78%] w-[78%]" />
     </span>
   );

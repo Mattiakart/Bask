@@ -47,7 +47,7 @@ export function WardrobeScreen() {
         <div>
           <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-ink">Nuovi acquisti</p>
           <p className="mt-1 text-[10px] text-ink-soft">Sincronizzati dal negozio</p>
-          <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-accent">Vedi nuovi</p>
+          <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-accent-ink">Vedi nuovi</p>
         </div>
         <CloudBagIcon className="h-11 w-11 text-ink" />
       </div>

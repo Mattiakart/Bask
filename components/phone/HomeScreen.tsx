@@ -10,7 +10,7 @@ export function HomeScreen() {
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f1f0ee] ring-1 ring-line">
             <CatFaceIcon className="h-[18px] w-[18px] text-ink" />
           </span>
-          <p className="text-[13px] font-semibold tracking-tight text-ink">Buongiorno, Chiara</p>
+          <p className="text-[13px] font-semibold text-ink">Buongiorno, Chiara</p>
         </div>
         <BellIcon className="h-[18px] w-[18px] text-ink-soft" />
       </div>
@@ -36,16 +36,16 @@ export function HomeScreen() {
           <ScreenLabel>Prossimo evento</ScreenLabel>
           <ChevronRightIcon className="h-3.5 w-3.5 text-muted" />
         </div>
-        <p className="mt-1.5 text-[15px] font-semibold tracking-tight text-ink">Team meeting</p>
+        <p className="mt-1.5 text-[15px] font-semibold text-ink">Team meeting</p>
         <p className="mt-0.5 text-[11px] text-muted">10:00 AM – 12:00 PM</p>
         <p className="mt-1 flex items-center gap-1 text-[10px] text-muted">
           <PinIcon className="h-3 w-3" />
           Milano
         </p>
-        <div className="mt-3 flex items-end gap-2">
+        <div className="mt-3 grid grid-cols-4 gap-2">
           <ItemTile kind="blazer" tone="dark" />
           <ItemTile kind="trousers" tone="light" />
-          <ItemTile kind="pump" tone="dark" size="sm" />
+          <ItemTile kind="pump" tone="dark" />
           <ItemTile kind="bag" tone="dark" />
         </div>
       </div>
@@ -54,10 +54,10 @@ export function HomeScreen() {
 
       <div className="mt-4">
         <ScreenLabel>Suggerimenti outfit</ScreenLabel>
-        <p className="mt-1.5 text-[15px] font-semibold tracking-tight text-ink">Smart &amp; polished</p>
-        <div className="mt-3 flex items-end gap-2">
-          <ItemTile kind="blazer" tone="dark" size="lg" />
-          <ItemTile kind="trousers" tone="light" size="lg" />
+        <p className="mt-1.5 text-[15px] font-semibold text-ink">Smart &amp; polished</p>
+        <div className="mt-3 grid grid-cols-4 gap-2">
+          <ItemTile kind="blazer" tone="dark" />
+          <ItemTile kind="trousers" tone="light" />
           <ItemTile kind="bag" tone="dark" />
           <ItemTile kind="pump" tone="dark" />
         </div>

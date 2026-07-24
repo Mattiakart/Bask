@@ -7,7 +7,7 @@ type PhoneFrameProps = {
 export function PhoneFrame({ children, className, label }: PhoneFrameProps) {
   return (
     <figure
-      className={`relative w-[300px] shrink-0 rounded-[42px] bg-[#0f1013] p-[9px] shadow-[0_40px_80px_-30px_rgba(21,22,26,0.55),0_2px_0_0_rgba(255,255,255,0.35)_inset] ${className ?? ""}`}
+      className={`relative w-[300px] max-w-full shrink-0 rounded-[42px] bg-[#0f1013] p-[9px] shadow-[0_40px_80px_-30px_rgba(21,22,26,0.55),0_2px_0_0_rgba(255,255,255,0.35)_inset] ${className ?? ""}`}
     >
       <div
         className="relative h-[620px] overflow-hidden rounded-[34px] bg-surface"

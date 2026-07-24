@@ -1,43 +1,22 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
 type RevealProps = {
   children: React.ReactNode;
   className?: string;
-  /** Stagger, in ms, applied to the reveal transition. */
-  delay?: number;
+  /** Shifts the scroll range so paired columns don't land at once. */
+  shift?: number;
   /** "peek" drives the cat animation instead of the default fade-and-rise. */
   variant?: "reveal" | "peek";
 };
 
-export function Reveal({ children, className, delay = 0, variant = "reveal" }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
+/**
+ * Marks a block for the scroll-driven reveal defined in globals.css. The
+ * animation is pure CSS, so the content stays visible on browsers without
+ * scroll-driven animation support.
+ */
+export function Reveal({ children, className, shift = 0, variant = "reveal" }: RevealProps) {
   return (
     <div
-      ref={ref}
       className={className}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      style={shift ? ({ "--reveal-shift": `${shift}%` } as React.CSSProperties) : undefined}
       {...(variant === "peek" ? { "data-peek": "" } : { "data-reveal": "" })}
     >
       {children}

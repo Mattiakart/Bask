@@ -52,12 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it" className={`${bodoni.variable} ${manrope.variable} h-full antialiased`}>
-      <body className="grain-overlay flex min-h-full flex-col">
-        <noscript>
-          <style>{`[data-reveal]{opacity:1;transform:none}[data-peek] .peek-cat{transform:none}`}</style>
-        </noscript>
-        {children}
-      </body>
+      <body className="grain-overlay flex min-h-full flex-col">{children}</body>
     </html>
   );
 }

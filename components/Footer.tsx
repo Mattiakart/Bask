@@ -7,8 +7,8 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="flex flex-col items-center gap-8 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
           <div className="flex items-end gap-4">
-            <LogoMark className="h-14 w-auto text-ink" />
-            <Wordmark className="pb-0.5 text-[1.375rem]" />
+            <LogoMark className="h-20 w-auto text-ink" />
+            <Wordmark className="pb-1 text-[1.5rem]" />
           </div>
           <p className="max-w-[17rem] text-sm leading-relaxed text-muted">
             Un armadio con più memoria di te. E la discrezione di non farlo pesare.

@@ -4,41 +4,61 @@ type LogoMarkProps = {
 };
 
 /**
- * The Bask monogram: an open door forms the spine of a Bodoni "B",
- * with two cats peeking out from the bottom of the lower bowl.
+ * The Bask monogram: an open door stands beside the thin spine of a Bodoni
+ * "B", with two cats peeking out from under the lower bowl.
  */
 export function LogoMark({ className, title }: LogoMarkProps) {
   return (
     <svg
-      viewBox="0 0 130 150"
+      viewBox="0 0 106 136"
       className={className}
       role={title ? "img" : "presentation"}
       aria-label={title}
       aria-hidden={title ? undefined : true}
       fill="none"
     >
-      {/* Door leaf, swung open toward the viewer */}
-      <path d="M12 4 L34 18 V132 L12 146 Z" fill="currentColor" />
-      <rect x="24" y="70" width="3.6" height="13" rx="1.8" fill="#b0763f" />
+      <Monogram />
+      <CatHead x={28} baseline={134} />
+      <CatHead x={50} baseline={134} />
+    </svg>
+  );
+}
 
-      {/* Door frame doubles as the thin spine of the B */}
-      <rect x="34" y="18" width="5" height="114" fill="currentColor" />
+/**
+ * Small-size lockup: the cats fall below legibility under ~40px, so the
+ * monogram drops to door and B only.
+ */
+export function LogoGlyph({ className, title }: LogoMarkProps) {
+  return (
+    <svg
+      viewBox="0 0 106 136"
+      className={className}
+      role={title ? "img" : "presentation"}
+      aria-label={title}
+      aria-hidden={title ? undefined : true}
+      fill="none"
+    >
+      <Monogram />
+    </svg>
+  );
+}
+
+function Monogram() {
+  return (
+    <g fill="currentColor">
+      {/* Door leaf, standing ajar beside the frame */}
+      <path d="M2 9 L11 2 V134 L2 127 Z" />
+      <rect x="5.4" y="63" width="2.6" height="14" rx="1.3" fill="#b0763f" />
+
+      {/* Frame line doubling as the spine of the B */}
+      <rect x="22" y="2" width="5" height="132" />
 
       {/* Upper bowl */}
-      <path
-        d="M39 18 H66 C88 18 100 30 100 44 C100 58 88 70 66 70 H39 V64 H64 C78 64 86 56 86 44 C86 32 78 24 64 24 H39 Z"
-        fill="currentColor"
-      />
+      <path d="M27 2 H56 C79 2 91 15 91 30 C91 45 79 59 56 59 H27 V52 H54 C69 52 77 43 77 30 C77 17 69 9 54 9 H27 Z" />
 
       {/* Lower bowl */}
-      <path
-        d="M39 70 H72 C98 70 112 84 112 101 C112 118 98 132 72 132 H39 V126 H70 C90 126 98 116 98 101 C98 86 90 76 70 76 H39 Z"
-        fill="currentColor"
-      />
-
-      <CatHead x={54} baseline={132} />
-      <CatHead x={76} baseline={132} />
-    </svg>
+      <path d="M27 59 H62 C90 59 104 74 104 96 C104 118 90 134 62 134 H27 V127 H60 C81 127 90 115 90 96 C90 77 81 66 60 66 H27 Z" />
+    </g>
   );
 }
 
@@ -46,40 +66,17 @@ function CatHead({ x, baseline }: { x: number; baseline: number }) {
   return (
     <g transform={`translate(${x} ${baseline})`}>
       <path
-        d="M-10 0 V-9 L-8.6 -19.5 L-2.2 -13.8 C-1.5 -14 -0.8 -14.1 0 -14.1 C0.8 -14.1 1.5 -14 2.2 -13.8 L8.6 -19.5 L10 -9 V0 Z"
+        d="M-9.5 0 V-10 C-9.5 -12.5 -9 -14 -8 -15.5 L-8.8 -22.5 L-3.4 -17.2 C-2.3 -17.6 -1.2 -17.8 0 -17.8 C1.2 -17.8 2.3 -17.6 3.4 -17.2 L8.8 -22.5 L8 -15.5 C9 -14 9.5 -12.5 9.5 -10 V0 Z"
         fill="#ffffff"
         stroke="currentColor"
-        strokeWidth="1.7"
+        strokeWidth="2"
         strokeLinejoin="round"
       />
-      <ellipse cx="-4.1" cy="-7" rx="2.7" ry="3.5" fill="#ffffff" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="4.1" cy="-7" rx="2.7" ry="3.5" fill="#ffffff" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="-4.1" cy="-7" rx="0.95" ry="2.4" fill="currentColor" />
-      <ellipse cx="4.1" cy="-7" rx="0.95" ry="2.4" fill="currentColor" />
+      <ellipse cx="-4" cy="-8" rx="2.7" ry="3.7" fill="#ffffff" stroke="currentColor" strokeWidth="1.5" />
+      <ellipse cx="4" cy="-8" rx="2.7" ry="3.7" fill="#ffffff" stroke="currentColor" strokeWidth="1.5" />
+      <ellipse cx="-4" cy="-8" rx="0.85" ry="2.6" fill="currentColor" />
+      <ellipse cx="4" cy="-8" rx="0.85" ry="2.6" fill="currentColor" />
     </g>
-  );
-}
-
-/**
- * Small-size lockup: the cats fall below legibility under ~40px, so the
- * monogram drops to door + B only.
- */
-export function LogoGlyph({ className, title }: LogoMarkProps) {
-  return (
-    <svg
-      viewBox="0 0 130 150"
-      className={className}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      fill="currentColor"
-    >
-      <path d="M12 4 L34 18 V132 L12 146 Z" />
-      <rect x="24" y="70" width="3.6" height="13" rx="1.8" fill="#b0763f" />
-      <rect x="34" y="18" width="5" height="114" />
-      <path d="M39 18 H66 C88 18 100 30 100 44 C100 58 88 70 66 70 H39 V64 H64 C78 64 86 56 86 44 C86 32 78 24 64 24 H39 Z" />
-      <path d="M39 70 H72 C98 70 112 84 112 101 C112 118 98 132 72 132 H39 V126 H70 C90 126 98 116 98 101 C98 86 90 76 70 76 H39 Z" />
-    </svg>
   );
 }
 

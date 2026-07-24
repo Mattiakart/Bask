@@ -98,14 +98,14 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
         <button
           type="submit"
           disabled={status === "pending"}
-          className={`${height} shrink-0 rounded-full bg-ink px-8 text-[10px] font-semibold uppercase tracking-[0.24em] text-bg transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60`}
+          className={`${height} shrink-0 rounded-full bg-ink px-8 text-[10px] font-semibold uppercase tracking-[0.24em] text-bg transition-colors hover:bg-accent-ink disabled:cursor-not-allowed disabled:opacity-60`}
         >
           {status === "pending" ? "Un attimo…" : "Unisciti alla waitlist"}
         </button>
       </form>
 
       {error ? (
-        <p id={`${fieldId}-error`} role="alert" className="mt-3 text-sm text-accent">
+        <p id={`${fieldId}-error`} role="alert" className="mt-3 text-sm text-accent-ink">
           {error}
         </p>
       ) : (

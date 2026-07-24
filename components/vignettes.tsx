@@ -48,7 +48,7 @@ const WORN: {
 
 export function MemoryVignette() {
   return (
-    <div className={`${PANEL} p-6 sm:p-7`}>
+    <div className={`${PANEL} p-5 sm:p-7`}>
       <div className="flex items-center justify-between">
         <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-muted">
           <ClockIcon className="h-4 w-4 text-accent" />
@@ -59,20 +59,20 @@ export function MemoryVignette() {
 
       <ul className="mt-5 divide-y divide-line">
         {WORN.map((look) => (
-          <li key={`${look.day}-${look.month}`} className="flex items-center gap-4 py-4">
-            <div className="w-11 shrink-0">
+          <li key={`${look.day}-${look.month}`} className="flex items-center gap-3 py-4 sm:gap-4">
+            <div className="w-9 shrink-0 sm:w-11">
               <p className="font-display text-[1.375rem] leading-none text-ink">{look.day}</p>
               <p className="mt-1 text-[9px] uppercase tracking-[0.2em] text-muted">{look.month}</p>
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-ink">{look.occasion}</p>
-              <p className="mt-0.5 truncate text-xs text-muted">{look.place}</p>
+              <p className="text-sm font-semibold text-ink sm:truncate">{look.occasion}</p>
+              <p className="mt-0.5 text-xs text-muted sm:truncate">{look.place}</p>
             </div>
-            <div className="flex shrink-0 gap-1.5">
+            <div className="flex shrink-0 gap-1 sm:gap-1.5">
               {look.items.map((item) => (
                 <span
                   key={item.kind}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f1f0ee] ring-1 ring-line"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f1f0ee] ring-1 ring-line sm:h-9 sm:w-9"
                 >
                   <Garment kind={item.kind} tone={item.tone} className="h-[76%] w-[76%]" />
                 </span>
@@ -92,11 +92,11 @@ export function MemoryVignette() {
 
 export function BoutiqueVignette() {
   return (
-    <div className={`${PANEL} p-6 sm:p-8`}>
+    <div className={`${PANEL} p-5 sm:p-8`}>
       <div className="flex items-center gap-4">
-        <StorefrontIcon className="h-[5.5rem] w-auto shrink-0 text-ink" />
+        <StorefrontIcon className="h-[4.5rem] w-auto shrink-0 text-ink sm:h-[5.5rem]" />
         <DashedArrow className="h-auto w-full min-w-8 flex-1 text-accent" />
-        <CloudBagIcon className="h-16 w-16 shrink-0 text-ink" />
+        <CloudBagIcon className="h-14 w-14 shrink-0 text-ink sm:h-16 sm:w-16" />
       </div>
 
       <div className="mt-7 border-t border-line pt-6">
@@ -113,9 +113,9 @@ export function BoutiqueVignette() {
           <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-ink">
             Nuovi acquisti
           </p>
-          <p className="mt-1 truncate text-xs text-ink-soft">3 capi aggiunti · Boutique Milano</p>
+          <p className="mt-1 text-xs text-ink-soft sm:truncate">3 capi aggiunti · Boutique Milano</p>
         </div>
-        <span className="ml-auto shrink-0 text-[9px] font-semibold uppercase tracking-[0.2em] text-accent">
+        <span className="ml-auto shrink-0 text-[9px] font-semibold uppercase tracking-[0.2em] text-accent-ink">
           Vedi nuovi
         </span>
       </div>
@@ -126,16 +126,16 @@ export function BoutiqueVignette() {
 function DashedArrow({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 80 12"
+      viewBox="0 0 96 12"
       className={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.8"
       strokeLinecap="round"
       aria-hidden="true"
     >
-      <path d="M2 6h64" strokeDasharray="1 7" />
-      <path d="m68 2 6 4-6 4" strokeLinejoin="round" />
+      <path d="M2 6h80" strokeDasharray="1 6" />
+      <path d="m85 2.5 5 3.5-5 3.5" strokeLinejoin="round" />
     </svg>
   );
 }
