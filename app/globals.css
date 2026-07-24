@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #e9ebed;
+  --bg-elevated: #f4f5f6;
+  --ink: #141414;
+  --muted: #5c6066;
+  --accent: #c45c26;
+  --accent-soft: rgba(196, 92, 38, 0.14);
+  --line: rgba(20, 20, 20, 0.12);
+  --line-accent: rgba(196, 92, 38, 0.45);
+  --phone: #1a1a1a;
+  --phone-screen: #f7f7f8;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-line: var(--line);
+  --color-line-accent: var(--line-accent);
+  --color-phone: var(--phone);
+  --color-phone-screen: var(--phone-screen);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-manrope);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Atmospheric wash + faint grain — not a flat fill */
+.page-atmosphere {
+  position: relative;
+  isolation: isolate;
+}
+
+.page-atmosphere::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 55% at 15% -10%, rgba(196, 92, 38, 0.12), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 20%, rgba(20, 20, 20, 0.06), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(196, 92, 38, 0.08), transparent 55%),
+    var(--bg);
+}
+
+.page-atmosphere::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.font-sans {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+}
+
+/* Hero entrance */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-rise-delay-1 {
+  animation-delay: 0.12s;
+}
+
+.animate-rise-delay-2 {
+  animation-delay: 0.24s;
+}
+
+.animate-rise-delay-3 {
+  animation-delay: 0.36s;
+}
+
+.animate-rise-delay-4 {
+  animation-delay: 0.48s;
+}
+
+/* Cat peek on scroll */
+@keyframes cat-peek {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cat-peek {
+  opacity: 0;
+}
+
+.cat-peek.is-visible {
+  animation: cat-peek 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Waitlist success */
+@keyframes success-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-success {
+  animation: success-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-rise,
+  .animate-rise-delay-1,
+  .animate-rise-delay-2,
+  .animate-rise-delay-3,
+  .animate-rise-delay-4,
+  .cat-peek.is-visible,
+  .animate-success {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
