@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #ecedee;
+  --color-bg-deep: #e0e1e4;
+  --color-surface: #f8f8f9;
+  --color-ink: #15161a;
+  --color-ink-soft: #3b3d44;
+  --color-muted: #797c85;
+  --color-line: rgba(21, 22, 26, 0.12);
+  --color-accent: #b0763f;
+  --color-accent-soft: rgba(176, 118, 63, 0.14);
+
+  --font-display: var(--font-bodoni), "Bodoni MT", Didot, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(
+        62rem 48rem at 78% -10%,
+        rgba(176, 118, 63, 0.1),
+        transparent 60%
+      ),
+      radial-gradient(
+        52rem 40rem at 8% 12%,
+        rgba(255, 255, 255, 0.85),
+        transparent 55%
+      ),
+      linear-gradient(180deg, #f2f2f3 0%, var(--color-bg) 38%, #e6e7e9 100%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@utility text-balance-display {
+  text-wrap: balance;
+}
+
+/* Fine paper grain so large flat areas read as fabric, not flat fill. */
+.grain-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.hairline {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-accent),
+    rgba(176, 118, 63, 0)
+  );
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes peek {
+  from {
+    transform: translateY(64px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 1. Hero entrance */
+.animate-rise {
+  animation: rise 1s var(--ease-out-soft) both;
+}
+
+/* 2. Scroll reveal, driven by IntersectionObserver in components/Reveal.tsx */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.9s var(--ease-out-soft),
+    transform 0.9s var(--ease-out-soft);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 3. Cat rising from behind its line */
+[data-peek] .peek-cat {
+  transform-box: view-box;
+  transform: translateY(64px);
+}
+
+[data-peek].is-visible .peek-cat {
+  animation: peek 0.9s var(--ease-out-soft) 0.25s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-rise,
+  [data-peek].is-visible .peek-cat {
+    animation: none;
+  }
+
+  [data-reveal],
+  [data-peek] .peek-cat {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
