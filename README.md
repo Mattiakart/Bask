@@ -12,14 +12,16 @@ every occasion*), matching the concept boards the design came from.
 - [Next.js](https://nextjs.org) 16 (App Router) + TypeScript
 - Tailwind CSS 4 — design tokens live in `@theme` inside `app/globals.css`
 - Bodoni Moda (display) and Manrope (UI) via `next/font`
-- No image assets: the monogram, garment silhouettes and app screens are all
-  hand-authored SVG and markup, so everything stays sharp at any size
+- No image assets in the page: the monogram, garment silhouettes and app screens
+  are all hand-authored SVG and markup, so everything stays sharp at any size.
+  The favicon and social card are generated from the same geometry at build time
 
 ## Running it
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+cp .env.example .env.local   # set NEXT_PUBLIC_SITE_URL
+npm run dev                  # http://localhost:3000
 ```
 
 ```bash
@@ -41,9 +43,13 @@ npx tsc --noEmit                 # typecheck
 | `400` | `{ "error": "invalid_body" }` | Body was not JSON |
 | `503` | `{ "error": "store_unavailable" }` | Write failed |
 
-The store defaults to `data/waitlist.json` (git-ignored) and can be pointed
-elsewhere with `WAITLIST_STORE`. It is deliberately the smallest thing that
-works: a file write, with concurrent writes serialised in `lib/waitlist.ts`.
+The store is `data/waitlist.json` (git-ignored), resolved against the working
+directory the server runs in. It is deliberately the smallest thing that works:
+a file write, with concurrent writes serialised in `lib/waitlist.ts`. The path
+is a literal rather than a setting, both because Turbopack can only trace the
+route's dependencies when it is, and because relocating the file is not the
+upgrade anyone actually needs.
+
 **A file store does not survive on serverless or multi-instance hosting** —
 before launch, replace the body of `addToWaitlist` with a database insert or an
 email-provider call. Nothing else needs to change.
@@ -52,8 +58,10 @@ email-provider call. Nothing else needs to change.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical URL for metadata and Open Graph tags |
-| `WAITLIST_STORE` | `data/waitlist.json` | Path to the waitlist file |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical origin for the canonical link, Open Graph tags, `robots.txt` and the sitemap |
+
+Set this before deploying, or shared links and the sitemap will point at
+localhost. See `.env.example`.
 
 ## Layout
 
@@ -62,17 +70,28 @@ app/
   layout.tsx            fonts, metadata
   page.tsx              section composition
   globals.css           design tokens, grain, keyframes
-  icon.svg              favicon
+  icon.tsx              favicon, 64px PNG
+  opengraph-image.tsx   1200x630 social card
+  robots.ts             robots.txt
+  sitemap.ts            sitemap.xml
   api/waitlist/route.ts signup endpoint
 components/
-  LogoMark.tsx          monogram (door + B + cats), small-size glyph, cat peek
+  LogoMark.tsx          monogram, small-size glyph, cat peek
   Garment.tsx           garment silhouettes by kind and tone
   AppIcons.tsx          UI icons used in the mockups
   phone/                phone frame and the four app screens
   vignettes.tsx         archive and boutique-sync illustrations
-lib/waitlist.ts         store
+lib/
+  monogram.ts           monogram geometry, shared by all three renderers
+  site.ts               canonical URL and shared copy
+  waitlist.ts           store
+assets/fonts/           TrueType copies for the social card, plus licences
 scripts/shoot.mjs       Playwright screenshot pass, for eyeballing changes
 ```
+
+The monogram lives as data in `lib/monogram.ts` because three renderers need
+it: the React components draw it as JSX, while the favicon and social card go
+through Satori, which only accepts SVG as an image source.
 
 ## Motion and accessibility
 

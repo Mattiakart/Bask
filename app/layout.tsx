@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Manrope } from "next/font/google";
+
+import { description, siteName, siteUrl, tagline } from "@/lib/site";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -14,13 +16,14 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const title = `${siteName} — ${tagline}`;
+const social = "L'armadio che ricorda cosa hai indossato, quando e dove. La webapp sta arrivando.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Bask in Wardrobe — A different outfit for every occasion",
-  description:
-    "Bask in Wardrobe ricorda cosa hai indossato, quando e dove. La webapp sta arrivando: lascia la tua email e sei tra le prime a entrare.",
+  title,
+  description,
+  alternates: { canonical: "/" },
   keywords: [
     "armadio digitale",
     "guardaroba virtuale",
@@ -31,18 +34,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "it_IT",
-    url: siteUrl,
-    siteName: "Bask in Wardrobe",
-    title: "Bask in Wardrobe — A different outfit for every occasion",
-    description:
-      "L'armadio che ricorda cosa hai indossato, quando e dove. La webapp sta arrivando.",
+    url: "/",
+    siteName,
+    title,
+    description: social,
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Bask in Wardrobe — A different outfit for every occasion",
-    description:
-      "L'armadio che ricorda cosa hai indossato, quando e dove. La webapp sta arrivando.",
-  },
+  twitter: { card: "summary_large_image", title, description: social },
 };
 
 export default function RootLayout({

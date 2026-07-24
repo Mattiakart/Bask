@@ -11,9 +11,12 @@ export type AddResult = "added" | "duplicate";
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 export const EMAIL_MAX_LENGTH = 254;
 
-const storePath = () =>
-  process.env.WAITLIST_STORE ??
-  path.join(/* turbopackIgnore: true */ process.cwd(), "data", "waitlist.json");
+/**
+ * Resolved against the working directory the server runs in. Kept as a literal
+ * so Turbopack can trace it instead of pulling the whole project into the
+ * route bundle — which also means it is deliberately not configurable.
+ */
+const STORE = "data/waitlist.json";
 
 /**
  * Writes are serialised so two submissions landing together can't clobber
@@ -29,7 +32,7 @@ function serialize<T>(task: () => Promise<T>): Promise<T> {
 
 async function readEntries(): Promise<WaitlistEntry[]> {
   try {
-    const parsed: unknown = JSON.parse(await readFile(storePath(), "utf8"));
+    const parsed: unknown = JSON.parse(await readFile(STORE, "utf8"));
     return Array.isArray(parsed) ? (parsed as WaitlistEntry[]) : [];
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
@@ -54,9 +57,8 @@ export function addToWaitlist(email: string): Promise<AddResult> {
 
     entries.push({ email: normalized, createdAt: new Date().toISOString() });
 
-    const file = storePath();
-    await mkdir(path.dirname(file), { recursive: true });
-    await writeFile(file, `${JSON.stringify(entries, null, 2)}\n`, "utf8");
+    await mkdir(path.dirname(STORE), { recursive: true });
+    await writeFile(STORE, `${JSON.stringify(entries, null, 2)}\n`, "utf8");
 
     return "added";
   });
