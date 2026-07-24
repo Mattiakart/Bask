@@ -8,8 +8,8 @@ export function Hero() {
   return (
     <section id="top" className="relative scroll-mt-16 overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -right-[18%] top-1/2 hidden -translate-y-1/2 lg:block">
-          <LogoGlyph className="h-[46rem] w-auto text-ink/[0.04]" />
+        <div className="absolute -right-[20%] top-1/2 hidden -translate-y-1/2 [mask-image:linear-gradient(to_left,black_25%,transparent_85%)] lg:block">
+          <LogoGlyph className="h-[46rem] w-auto text-ink/[0.05]" />
         </div>
         <div className="absolute left-1/2 top-[-30%] h-[70rem] w-[70rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.7),transparent_60%)]" />
       </div>
