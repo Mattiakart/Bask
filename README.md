@@ -12,23 +12,88 @@ every occasion*), matching the concept boards the design came from.
 - [Next.js](https://nextjs.org) 16 (App Router) + TypeScript
 - Tailwind CSS 4 — design tokens live in `@theme` inside `app/globals.css`
 - Bodoni Moda (display) and Manrope (UI) via `next/font`
-- No image assets: the monogram, garment silhouettes and app screens are all
-  hand-authored SVG and markup, so everything stays sharp at any size
+- No image assets in the page: the monogram, garment silhouettes and app screens
+  are all hand-authored SVG and markup, so everything stays sharp at any size.
+  The favicon and social card are generated from the same geometry at build time
 
 ## Running it
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+cp .env.example .env.local   # set NEXT_PUBLIC_SITE_URL
+npm run dev                  # http://localhost:3000
 ```
 
 ```bash
-npm run build && npm run start   # production
+npm run build && npm run start   # Node production server (includes /api/waitlist)
+npm run build:static             # Plain files in out/ for any static host
 npm run lint
 npx tsc --noEmit                 # typecheck
 ```
 
+## Deploying
+
+### Why a domain showed “Index of /”
+
+Pointing a domain at the GitHub repository (or at a folder of source files) only
+lists those files. This project is a Next.js app — the browser needs the
+**built** site, not `app/`, `components/`, or `package.json`.
+
+Build once, then publish only the result:
+
+| Mode | Command | Publish |
+| --- | --- | --- |
+| Static (GitHub Pages, Netlify, Cloudflare Pages, S3, any file host) | `npm run build:static` | the `out/` folder |
+| Node server (Vercel, Railway, a VPS) | `npm run build` then `npm start` | the running process |
+
+### Static hosting (recommended for a coming-soon page)
+
+1. Create a free form endpoint (Formspree, Getform, Basin, …) and copy its URL.
+2. Set environment variables (locally in `.env.local`, or as host / Actions vars):
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | yes | Canonical origin for links, Open Graph, `robots.txt`, sitemap |
+| `NEXT_PUBLIC_WAITLIST_ENDPOINT` | yes on static | Where the form POSTs; static hosts cannot run `/api/waitlist` |
+| `NEXT_PUBLIC_BASE_PATH` | only for project Pages | e.g. `/Bask` when the site lives at `user.github.io/Bask` |
+
+3. Build and upload the contents of `out/`:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your.domain \
+NEXT_PUBLIC_WAITLIST_ENDPOINT=https://formspree.io/f/xxxxxxxx \
+npm run build:static
+```
+
+A static build leaves the waitlist API out on purpose (`route.node.ts` is
+excluded via `pageExtensions`). The form posts to
+`NEXT_PUBLIC_WAITLIST_ENDPOINT` instead.
+
+### GitHub Pages from this repo
+
+A workflow at `.github/workflows/deploy-pages.yml` builds on every push to
+`main` and publishes `out/`.
+
+1. Repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Repo → **Settings → Secrets and variables → Actions → Variables**, add the
+   three `NEXT_PUBLIC_*` values above.
+3. Merge to `main` (or run the workflow manually). Point the custom domain at
+   GitHub Pages — **do not** point it at the raw repository.
+
+### Node hosting
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your.domain npm run build
+npm start
+```
+
+`/api/waitlist` is included and writes to `data/waitlist.json`. That file store
+does not survive serverless or multi-instance hosting — replace the body of
+`addToWaitlist` with a database insert or email-provider call before launch.
+
 ## Waitlist
+
+### Node build (`/api/waitlist`)
 
 `POST /api/waitlist` takes `{ "email": "..." }` and appends
 `{ email, createdAt }` to a JSON file. Responses:
@@ -41,38 +106,47 @@ npx tsc --noEmit                 # typecheck
 | `400` | `{ "error": "invalid_body" }` | Body was not JSON |
 | `503` | `{ "error": "store_unavailable" }` | Write failed |
 
-The store defaults to `data/waitlist.json` (git-ignored) and can be pointed
-elsewhere with `WAITLIST_STORE`. It is deliberately the smallest thing that
-works: a file write, with concurrent writes serialised in `lib/waitlist.ts`.
-**A file store does not survive on serverless or multi-instance hosting** —
-before launch, replace the body of `addToWaitlist` with a database insert or an
-email-provider call. Nothing else needs to change.
+Writes are serialised in `lib/waitlist.ts` so concurrent submissions cannot
+clobber each other.
 
-### Environment
+### Static build
 
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical URL for metadata and Open Graph tags |
-| `WAITLIST_STORE` | `data/waitlist.json` | Path to the waitlist file |
+The form POSTs JSON `{ "email": "..." }` to `NEXT_PUBLIC_WAITLIST_ENDPOINT`.
+Any service that accepts that shape and returns 2xx works. Duplicates are not
+reported separately by those services, so a 2xx is treated as success.
 
 ## Layout
 
 ```
 app/
-  layout.tsx            fonts, metadata
-  page.tsx              section composition
-  globals.css           design tokens, grain, keyframes
-  icon.svg              favicon
-  api/waitlist/route.ts signup endpoint
+  layout.tsx              fonts, metadata
+  page.tsx                section composition
+  globals.css             design tokens, grain, keyframes
+  icon.png/route.tsx      favicon, 64px PNG
+  og.png/route.tsx        1200x630 social card
+  robots.ts               robots.txt
+  sitemap.ts              sitemap.xml
+  api/waitlist/route.node.ts   signup endpoint (Node builds only)
 components/
-  LogoMark.tsx          monogram (door + B + cats), small-size glyph, cat peek
-  Garment.tsx           garment silhouettes by kind and tone
-  AppIcons.tsx          UI icons used in the mockups
-  phone/                phone frame and the four app screens
-  vignettes.tsx         archive and boutique-sync illustrations
-lib/waitlist.ts         store
-scripts/shoot.mjs       Playwright screenshot pass, for eyeballing changes
+  LogoMark.tsx            monogram, small-size glyph, cat peek
+  Garment.tsx             garment silhouettes by kind and tone
+  AppIcons.tsx            UI icons used in the mockups
+  phone/                  phone frame and the four app screens
+  vignettes.tsx           archive and boutique-sync illustrations
+lib/
+  monogram.ts             monogram geometry, shared by all three renderers
+  site.ts                 canonical URL and shared copy
+  waitlist.ts             store
+assets/fonts/             TrueType copies for the social card, plus licences
+.github/workflows/        GitHub Pages deploy
+scripts/shoot.mjs         Playwright screenshot pass, for eyeballing changes
 ```
+
+The monogram lives as data in `lib/monogram.ts` because three renderers need
+it: the React components draw it as JSX, while the favicon and social card go
+through Satori, which only accepts SVG as an image source. Both image routes
+carry a `.png` extension so a static export writes real `icon.png` / `og.png`
+files that any file host serves with the right content type.
 
 ## Motion and accessibility
 

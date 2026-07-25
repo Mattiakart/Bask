@@ -1,3 +1,5 @@
+import { ACCENT, MONOGRAM } from "@/lib/monogram";
+
 type LogoMarkProps = {
   className?: string;
   title?: string;
@@ -9,18 +11,11 @@ type LogoMarkProps = {
  */
 export function LogoMark({ className, title }: LogoMarkProps) {
   return (
-    <svg
-      viewBox="0 0 106 136"
-      className={className}
-      role={title ? "img" : "presentation"}
-      aria-label={title}
-      aria-hidden={title ? undefined : true}
-      fill="none"
-    >
-      <Monogram />
-      <CatHead x={28} baseline={134} />
-      <CatHead x={50} baseline={134} />
-    </svg>
+    <MonogramSvg className={className} title={title}>
+      {MONOGRAM.cat.centres.map((x) => (
+        <CatHead key={x} x={x} baseline={MONOGRAM.cat.baseline} />
+      ))}
+    </MonogramSvg>
   );
 }
 
@@ -29,53 +24,76 @@ export function LogoMark({ className, title }: LogoMarkProps) {
  * monogram drops to door and B only.
  */
 export function LogoGlyph({ className, title }: LogoMarkProps) {
+  return <MonogramSvg className={className} title={title} />;
+}
+
+function MonogramSvg({
+  className,
+  title,
+  children,
+}: LogoMarkProps & { children?: React.ReactNode }) {
+  const { handle, spine } = MONOGRAM;
+
   return (
     <svg
-      viewBox="0 0 106 136"
+      viewBox={MONOGRAM.viewBox}
       className={className}
       role={title ? "img" : "presentation"}
       aria-label={title}
       aria-hidden={title ? undefined : true}
       fill="none"
     >
-      <Monogram />
+      <g fill="currentColor">
+        <path d={MONOGRAM.door} />
+        <rect x={spine.x} y={spine.y} width={spine.width} height={spine.height} />
+        <path d={MONOGRAM.upperBowl} />
+        <path d={MONOGRAM.lowerBowl} />
+      </g>
+      <rect
+        x={handle.x}
+        y={handle.y}
+        width={handle.width}
+        height={handle.height}
+        rx={handle.rx}
+        fill={ACCENT}
+      />
+      {children}
     </svg>
   );
 }
 
-function Monogram() {
-  return (
-    <g fill="currentColor">
-      {/* Door leaf, standing ajar beside the frame */}
-      <path d="M2 9 L11 2 V134 L2 127 Z" />
-      <rect x="5.4" y="63" width="2.6" height="14" rx="1.3" fill="#b0763f" />
-
-      {/* Frame line doubling as the spine of the B */}
-      <rect x="22" y="2" width="5" height="132" />
-
-      {/* Upper bowl */}
-      <path d="M27 2 H56 C79 2 91 15 91 30 C91 45 79 59 56 59 H27 V52 H54 C69 52 77 43 77 30 C77 17 69 9 54 9 H27 Z" />
-
-      {/* Lower bowl */}
-      <path d="M27 59 H62 C90 59 104 74 104 96 C104 118 90 134 62 134 H27 V127 H60 C81 127 90 115 90 96 C90 77 81 66 60 66 H27 Z" />
-    </g>
-  );
-}
-
 function CatHead({ x, baseline }: { x: number; baseline: number }) {
+  const { head, eye } = MONOGRAM.cat;
+
   return (
     <g transform={`translate(${x} ${baseline})`}>
       <path
-        d="M-9.5 0 V-10 C-9.5 -12.5 -9 -14 -8 -15.5 L-8.8 -22.5 L-3.4 -17.2 C-2.3 -17.6 -1.2 -17.8 0 -17.8 C1.2 -17.8 2.3 -17.6 3.4 -17.2 L8.8 -22.5 L8 -15.5 C9 -14 9.5 -12.5 9.5 -10 V0 Z"
+        d={head}
         fill="#ffffff"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinejoin="round"
       />
-      <ellipse cx="-4" cy="-8" rx="2.7" ry="3.7" fill="#ffffff" stroke="currentColor" strokeWidth="1.5" />
-      <ellipse cx="4" cy="-8" rx="2.7" ry="3.7" fill="#ffffff" stroke="currentColor" strokeWidth="1.5" />
-      <ellipse cx="-4" cy="-8" rx="0.85" ry="2.6" fill="currentColor" />
-      <ellipse cx="4" cy="-8" rx="0.85" ry="2.6" fill="currentColor" />
+      {[-1, 1].map((side) => (
+        <g key={side}>
+          <ellipse
+            cx={side * eye.dx}
+            cy={eye.cy}
+            rx={eye.rx}
+            ry={eye.ry}
+            fill="#ffffff"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <ellipse
+            cx={side * eye.dx}
+            cy={eye.cy}
+            rx={eye.pupilRx}
+            ry={eye.pupilRy}
+            fill="currentColor"
+          />
+        </g>
+      ))}
     </g>
   );
 }

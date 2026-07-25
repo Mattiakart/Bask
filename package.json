@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "STATIC_EXPORT=true next build",
+    "prepare:hosting": "node scripts/prepare-hosting.mjs",
+    "build:hosting": "npm run build:static && npm run prepare:hosting",
     "start": "next start",
     "lint": "eslint"
   },
