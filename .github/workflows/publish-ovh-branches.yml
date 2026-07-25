@@ -46,6 +46,8 @@ jobs:
         run: npm run build:hosting
 
       - name: Publish production to main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/publish-hosting-branch.mjs main production
 
       - name: Build test hosting bundle
@@ -56,4 +58,6 @@ jobs:
         run: npm run build:hosting
 
       - name: Publish test branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/publish-hosting-branch.mjs cursor/test-site-2cf4 testing

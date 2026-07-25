@@ -18,13 +18,31 @@ if (!branch) {
   process.exit(1);
 }
 
+/** Embed Actions credentials so orphan-repo force-pushes can authenticate. */
+function authenticatedRemote(url) {
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  if (!token) return url;
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") return url;
+    parsed.username = "x-access-token";
+    parsed.password = token;
+    return parsed.href;
+  } catch {
+    return url;
+  }
+}
+
 const stage = join(process.cwd(), ".deploy-stage");
 if (!existsSync(stage)) {
   console.error(".deploy-stage missing — run: npm run build:hosting");
   process.exit(1);
 }
 
-const remote = execSync("git remote get-url origin", { encoding: "utf8" }).trim();
+const remote = authenticatedRemote(
+  execSync("git remote get-url origin", { encoding: "utf8" }).trim(),
+);
 const work = mkdtempSync(join(tmpdir(), "bask-hosting-"));
 
 try {
@@ -33,6 +51,8 @@ try {
     cwd: work,
   });
   execFileSync("git", ["config", "user.name", "github-actions[bot]"], { cwd: work });
+  // Avoid leaking the token in CI logs if git prints the remote URL.
+  execFileSync("git", ["config", "remote.origin.prompt", "false"], { cwd: work });
   execFileSync("git", ["remote", "add", "origin", remote], { cwd: work });
 
   cpSync(stage, work, { recursive: true });
