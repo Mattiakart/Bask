@@ -1,0 +1,17 @@
+# Bask static site — Apache / LiteSpeed
+DirectoryIndex index.php index.html
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_mime.c>
+  AddType text/css .css
+  AddType application/javascript .js
+  AddType image/png .png
+  AddType font/woff2 .woff2
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|png)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
