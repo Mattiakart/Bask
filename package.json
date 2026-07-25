@@ -9,8 +9,8 @@
     "prepare:hosting": "node scripts/prepare-hosting.mjs",
     "build:hosting": "npm run build:static && npm run prepare:hosting",
     "publish:test": "node scripts/publish-hosting-branch.mjs cursor/test-site-2cf4 testing",
-    "publish:deploy": "node scripts/publish-hosting-branch.mjs cursor/deploy-site-2cf4 production",
-    "publish:ovh": "npm run build:hosting && npm run publish:test && npm run publish:deploy",
+    "publish:main": "node scripts/publish-hosting-branch.mjs main production",
+    "publish:ovh": "npm run build:hosting && npm run publish:main && npm run publish:test",
     "start": "next start",
     "lint": "eslint"
   },

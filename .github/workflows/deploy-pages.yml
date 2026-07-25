@@ -12,7 +12,7 @@ name: Deploy static site
 
 on:
   push:
-    branches: [main]
+    branches: [cursor/source-2cf4]
   workflow_dispatch:
 
 permissions:

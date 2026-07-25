@@ -29,18 +29,19 @@ npm run lint
 npx tsc --noEmit                 # typecheck
 ```
 
-## Deploying on OVH (no npm on the host)
+## Deploying on OVH (no npm / nvm on the host)
 
-OVH shared hosting cannot run `npm`. Keep **`main`** as source code. Two other
-branches hold only the **built** site and are what you point OVH at:
+OVH cannot run Node, npm, or nvm. So **`main` is the prebuilt production site**
+you point OVH at — not the Next.js source.
 
-| Branch | Purpose |
-| --- | --- |
-| `cursor/test-site-2cf4` | Testing / staging domain |
-| `cursor/deploy-site-2cf4` | Production domain |
+| Branch | Contents | Point OVH here? |
+| --- | --- | --- |
+| `main` | Prebuilt HTML/CSS/JS (production) | **Yes — production** |
+| `cursor/test-site-2cf4` | Prebuilt HTML/CSS/JS (test) | Yes — test / staging |
+| `cursor/source-2cf4` | Next.js source code | **No** |
 
-On every push to `main`, GitHub Actions builds the site and force-updates both
-branches (`.github/workflows/publish-ovh-branches.yml`).
+Push to `cursor/source-2cf4` and GitHub Actions builds the site, then force-updates
+`main` and `cursor/test-site-2cf4` (`.github/workflows/publish-ovh-branches.yml`).
 
 ### One-time OVH setup
 
@@ -49,13 +50,13 @@ branches (`.github/workflows/publish-ovh-branches.yml`).
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | yes | Production origin (used for the deploy branch) |
+| `NEXT_PUBLIC_SITE_URL` | yes | Production origin (baked into `main`) |
 | `NEXT_PUBLIC_WAITLIST_ENDPOINT` | yes | Where the email form POSTs |
 | `NEXT_PUBLIC_TEST_SITE_URL` | optional | Origin baked into the test branch |
 
 3. In OVH, attach:
+   - the **production** domain → branch `main`
    - the **test** domain → branch `cursor/test-site-2cf4`
-   - the **production** domain → branch `cursor/deploy-site-2cf4`
 4. Set each site’s **document root** to the repo root **or** `public_html/`.
 5. Sync / redeploy git, then hard-refresh.
 
@@ -65,6 +66,7 @@ You must see `index.html` / `index.php` at the document root — never
 ### Manual publish (from a machine that has Node)
 
 ```bash
+git checkout cursor/source-2cf4
 NEXT_PUBLIC_SITE_URL=https://your.domain \
 NEXT_PUBLIC_WAITLIST_ENDPOINT=https://formspree.io/f/xxxxxxxx \
 npm run publish:ovh
@@ -74,14 +76,14 @@ Or publish one environment:
 
 ```bash
 npm run build:hosting
+npm run publish:main     # → main (production for OVH)
 npm run publish:test     # → cursor/test-site-2cf4
-npm run publish:deploy   # → cursor/deploy-site-2cf4
 ```
 
 ### Why a domain showed “Index of /”
 
-Pointing a domain at the **source** branch (`main`) lists files like `app/` and
-`package.json`. Point OVH at the **built** branches above instead.
+Pointing a domain at the **source** branch lists files like `app/` and
+`package.json`. Point OVH at **`main`** (or the test branch) instead.
 
 ### GitHub Pages (optional)
 

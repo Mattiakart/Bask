@@ -1,9 +1,11 @@
 name: Publish OVH hosting branches
 
 # Builds the site on GitHub (where npm works) and force-pushes two
-# prebuilt branches that OVH can serve with no Node/npm:
-#   cursor/test-site-2cf4   → testing / staging
-#   cursor/deploy-site-2cf4 → production
+# prebuilt branches that OVH can serve with no Node/npm/nvm:
+#   main                  → production (point OVH here)
+#   cursor/test-site-2cf4 → testing / staging
+#
+# Source of truth lives on cursor/source-2cf4 — never deploy that branch to OVH.
 #
 # Repo → Settings → Secrets and variables → Actions → Variables:
 #   NEXT_PUBLIC_SITE_URL            = https://your-production-domain
@@ -12,7 +14,7 @@ name: Publish OVH hosting branches
 
 on:
   push:
-    branches: [main]
+    branches: [cursor/source-2cf4]
   workflow_dispatch:
 
 permissions:
@@ -42,8 +44,8 @@ jobs:
           NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
         run: npm run build:hosting
 
-      - name: Publish production branch
-        run: node scripts/publish-hosting-branch.mjs cursor/deploy-site-2cf4 production
+      - name: Publish production to main
+        run: node scripts/publish-hosting-branch.mjs main production
 
       - name: Build test hosting bundle
         env:

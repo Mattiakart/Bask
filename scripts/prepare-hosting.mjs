@@ -110,8 +110,8 @@ This branch is the **built website**, not the Next.js source. No npm on the host
 
 | Branch | Use |
 | --- | --- |
+| \`main\` | Production domain |
 | \`cursor/test-site-2cf4\` | Testing / staging domain |
-| \`cursor/deploy-site-2cf4\` | Production domain |
 
 1. Point the host at the matching branch above.
 2. Set the **document root** to the repository root **or** \`public_html/\`.
