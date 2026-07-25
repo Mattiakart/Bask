@@ -29,54 +29,64 @@ npm run lint
 npx tsc --noEmit                 # typecheck
 ```
 
-## Deploying
+## Deploying on OVH (no npm on the host)
 
-### Why a domain showed “Index of /”
+OVH shared hosting cannot run `npm`. Keep **`main`** as source code. Two other
+branches hold only the **built** site and are what you point OVH at:
 
-Pointing a domain at the GitHub repository (or at a folder of source files) only
-lists those files. This project is a Next.js app — the browser needs the
-**built** site, not `app/`, `components/`, or `package.json`.
+| Branch | Purpose |
+| --- | --- |
+| `cursor/test-site-2cf4` | Testing / staging domain |
+| `cursor/deploy-site-2cf4` | Production domain |
 
-Build once, then publish only the result:
+On every push to `main`, GitHub Actions builds the site and force-updates both
+branches (`.github/workflows/publish-ovh-branches.yml`).
 
-| Mode | Command | Publish |
-| --- | --- | --- |
-| Static (GitHub Pages, Netlify, Cloudflare Pages, S3, any file host) | `npm run build:static` | the `out/` folder |
-| Node server (Vercel, Railway, a VPS) | `npm run build` then `npm start` | the running process |
+### One-time OVH setup
 
-### Static hosting (recommended for a coming-soon page)
-
-1. Create a free form endpoint (Formspree, Getform, Basin, …) and copy its URL.
-2. Set environment variables (locally in `.env.local`, or as host / Actions vars):
+1. Create a free form endpoint (Formspree, Getform, Basin, …).
+2. In GitHub → **Settings → Secrets and variables → Actions → Variables**:
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | yes | Canonical origin for links, Open Graph, `robots.txt`, sitemap |
-| `NEXT_PUBLIC_WAITLIST_ENDPOINT` | yes on static | Where the form POSTs; static hosts cannot run `/api/waitlist` |
-| `NEXT_PUBLIC_BASE_PATH` | only for project Pages | e.g. `/Bask` when the site lives at `user.github.io/Bask` |
+| `NEXT_PUBLIC_SITE_URL` | yes | Production origin (used for the deploy branch) |
+| `NEXT_PUBLIC_WAITLIST_ENDPOINT` | yes | Where the email form POSTs |
+| `NEXT_PUBLIC_TEST_SITE_URL` | optional | Origin baked into the test branch |
 
-3. Build and upload the contents of `out/`:
+3. In OVH, attach:
+   - the **test** domain → branch `cursor/test-site-2cf4`
+   - the **production** domain → branch `cursor/deploy-site-2cf4`
+4. Set each site’s **document root** to the repo root **or** `public_html/`.
+5. Sync / redeploy git, then hard-refresh.
+
+You must see `index.html` / `index.php` at the document root — never
+`package.json`, `app/`, or `components/`. That is what causes “Index of /”.
+
+### Manual publish (from a machine that has Node)
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://your.domain \
 NEXT_PUBLIC_WAITLIST_ENDPOINT=https://formspree.io/f/xxxxxxxx \
-npm run build:static
+npm run publish:ovh
 ```
 
-A static build leaves the waitlist API out on purpose (`route.node.ts` is
-excluded via `pageExtensions`). The form posts to
-`NEXT_PUBLIC_WAITLIST_ENDPOINT` instead.
+Or publish one environment:
 
-### GitHub Pages from this repo
+```bash
+npm run build:hosting
+npm run publish:test     # → cursor/test-site-2cf4
+npm run publish:deploy   # → cursor/deploy-site-2cf4
+```
 
-A workflow at `.github/workflows/deploy-pages.yml` builds on every push to
-`main` and publishes `out/`.
+### Why a domain showed “Index of /”
 
-1. Repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-2. Repo → **Settings → Secrets and variables → Actions → Variables**, add the
-   three `NEXT_PUBLIC_*` values above.
-3. Merge to `main` (or run the workflow manually). Point the custom domain at
-   GitHub Pages — **do not** point it at the raw repository.
+Pointing a domain at the **source** branch (`main`) lists files like `app/` and
+`package.json`. Point OVH at the **built** branches above instead.
+
+### GitHub Pages (optional)
+
+A workflow at `.github/workflows/deploy-pages.yml` can also publish `out/` to
+GitHub Pages if you enable Pages → Source: GitHub Actions.
 
 ### Node hosting
 

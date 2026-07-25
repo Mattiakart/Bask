@@ -1,0 +1,56 @@
+name: Publish OVH hosting branches
+
+# Builds the site on GitHub (where npm works) and force-pushes two
+# prebuilt branches that OVH can serve with no Node/npm:
+#   cursor/test-site-2cf4   → testing / staging
+#   cursor/deploy-site-2cf4 → production
+#
+# Repo → Settings → Secrets and variables → Actions → Variables:
+#   NEXT_PUBLIC_SITE_URL            = https://your-production-domain
+#   NEXT_PUBLIC_WAITLIST_ENDPOINT   = https://formspree.io/f/xxxx
+#   NEXT_PUBLIC_TEST_SITE_URL       = https://your-test-domain   (optional)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ovh-hosting
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build production hosting bundle
+        env:
+          STATIC_EXPORT: "true"
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
+        run: npm run build:hosting
+
+      - name: Publish production branch
+        run: node scripts/publish-hosting-branch.mjs cursor/deploy-site-2cf4 production
+
+      - name: Build test hosting bundle
+        env:
+          STATIC_EXPORT: "true"
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_TEST_SITE_URL || vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
+        run: npm run build:hosting
+
+      - name: Publish test branch
+        run: node scripts/publish-hosting-branch.mjs cursor/test-site-2cf4 testing

@@ -104,16 +104,18 @@ writeFileSync(
   join(STAGE, "README.md"),
   `# Bask — hosting build
 
-This branch is the **built website**, not the Next.js source.
+This branch is the **built website**, not the Next.js source. No npm on the host.
 
-## If you still see “Index of /” or “Not Found”
+## OVH branches
 
-1. In the hosting panel, deploy branch **\`cursor/deploy-site-2cf4\`**.
-2. Set the **document root** to one of:
-   - the repository root, **or**
-   - the \`public_html/\` folder inside this branch  
-     (use this if your host always points the domain at \`public_html\`).
-3. Redeploy / sync git, then hard-refresh the browser.
+| Branch | Use |
+| --- | --- |
+| \`cursor/test-site-2cf4\` | Testing / staging domain |
+| \`cursor/deploy-site-2cf4\` | Production domain |
+
+1. Point the host at the matching branch above.
+2. Set the **document root** to the repository root **or** \`public_html/\`.
+3. Sync git, then hard-refresh the browser.
 
 You should see \`index.html\` (and \`index.php\`) at the document root — not \`app/\` or \`package.json\`.
 `,
