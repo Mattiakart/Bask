@@ -18,17 +18,26 @@ if (!branch) {
   process.exit(1);
 }
 
-/** Embed Actions credentials so orphan-repo force-pushes can authenticate. */
-function authenticatedRemote(url) {
+/** Match actions/checkout: auth via extraheader so the token never sits in the remote URL. */
+function gitAuthEnv() {
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
-  if (!token) return url;
+  if (!token) return {};
 
+  const basic = Buffer.from(`x-access-token:${token}`, "utf8").toString("base64");
+  return {
+    GIT_CONFIG_COUNT: "1",
+    GIT_CONFIG_KEY_0: "http.https://github.com/.extraheader",
+    GIT_CONFIG_VALUE_0: `AUTHORIZATION: basic ${basic}`,
+  };
+}
+
+/** Strip embedded credentials; push auth comes from gitAuthEnv(). */
+function cleanRemote(url) {
   try {
     const parsed = new URL(url);
-    if (parsed.protocol !== "https:") return url;
-    parsed.username = "x-access-token";
-    parsed.password = token;
-    return parsed.href;
+    parsed.username = "";
+    parsed.password = "";
+    return parsed.href.replace(/\/$/, "");
   } catch {
     return url;
   }
@@ -40,20 +49,17 @@ if (!existsSync(stage)) {
   process.exit(1);
 }
 
-const remote = authenticatedRemote(
-  execSync("git remote get-url origin", { encoding: "utf8" }).trim(),
-);
+const remote = cleanRemote(execSync("git remote get-url origin", { encoding: "utf8" }).trim());
 const work = mkdtempSync(join(tmpdir(), "bask-hosting-"));
+const env = { ...process.env, ...gitAuthEnv() };
 
 try {
-  execFileSync("git", ["init", "-b", branch], { cwd: work, stdio: "inherit" });
+  execFileSync("git", ["init", "-b", branch], { cwd: work, stdio: "inherit", env });
   execFileSync("git", ["config", "user.email", "github-actions[bot]@users.noreply.github.com"], {
     cwd: work,
+    env,
   });
-  execFileSync("git", ["config", "user.name", "github-actions[bot]"], { cwd: work });
-  // Avoid leaking the token in CI logs if git prints the remote URL.
-  execFileSync("git", ["config", "remote.origin.prompt", "false"], { cwd: work });
-  execFileSync("git", ["remote", "add", "origin", remote], { cwd: work });
+  execFileSync("git", ["config", "user.name", "github-actions[bot]"], { cwd: work, env });
 
   cpSync(stage, work, { recursive: true });
 
@@ -75,14 +81,17 @@ You should see \`index.html\` / \`index.php\` at the document root — never
 `,
   );
 
-  execFileSync("git", ["add", "-A"], { cwd: work, stdio: "inherit" });
+  execFileSync("git", ["add", "-A"], { cwd: work, stdio: "inherit", env });
   execFileSync("git", ["commit", "-m", `Publish ${label} static site`], {
     cwd: work,
     stdio: "inherit",
+    env,
   });
-  execFileSync("git", ["push", "-f", "-u", "origin", branch], {
+  // Push by URL (no `git remote add`) so runner git config can't collide with origin.
+  execFileSync("git", ["push", "-f", remote, `HEAD:refs/heads/${branch}`], {
     cwd: work,
     stdio: "inherit",
+    env,
   });
 
   console.log(`Published ${branch}`);

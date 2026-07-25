@@ -3,7 +3,8 @@ name: Deploy static site
 # Builds the marketing page as plain files and publishes them to GitHub Pages.
 # The source tree is never served — that is what produces an "Index of /" listing.
 #
-# One-time setup in the repo:
+# Optional: OVH hosting is the primary path (see publish-ovh-branches.yml).
+# One-time Pages setup in the repo (admin required — Actions cannot enable this):
 #   Settings → Pages → Build and deployment → Source: GitHub Actions
 #   Settings → Secrets and variables → Actions → Variables:
 #     NEXT_PUBLIC_SITE_URL          = https://your-domain (or https://user.github.io/Bask)
@@ -53,25 +54,29 @@ jobs:
         with:
           path: out
 
+  pages-status:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::GitHub Pages is not enabled — build succeeded, deploy skipped. Enable at Settings → Pages → Source: GitHub Actions (admin)."
+          fi
+
   deploy:
-    needs: build
+    needs: [build, pages-status]
+    if: needs.pages-status.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # Creates the Pages site if it was never turned on (Settings → Pages).
-      - name: Ensure GitHub Pages uses GitHub Actions
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1; then
-            gh api --method PUT "repos/${{ github.repository }}/pages" \
-              -f build_type=workflow
-          else
-            gh api --method POST "repos/${{ github.repository }}/pages" \
-              -f build_type=workflow
-          fi
-
       - id: deployment
         uses: actions/deploy-pages@v4
