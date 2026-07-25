@@ -40,7 +40,8 @@ jobs:
       - name: Build production hosting bundle
         env:
           STATIC_EXPORT: "true"
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          # Empty repo vars become "" in Actions; fall back so metadataBase stays a valid URL.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' }}
           NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
         run: npm run build:hosting
 
@@ -50,7 +51,7 @@ jobs:
       - name: Build test hosting bundle
         env:
           STATIC_EXPORT: "true"
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_TEST_SITE_URL || vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_TEST_SITE_URL || vars.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' }}
           NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
         run: npm run build:hosting
 

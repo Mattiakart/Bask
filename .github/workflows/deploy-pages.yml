@@ -40,7 +40,8 @@ jobs:
       - name: Build static export
         env:
           STATIC_EXPORT: "true"
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          # Empty repo vars become "" in Actions; fall back so metadataBase stays a valid URL.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' }}
           NEXT_PUBLIC_WAITLIST_ENDPOINT: ${{ vars.NEXT_PUBLIC_WAITLIST_ENDPOINT }}
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
         run: npm run build:static

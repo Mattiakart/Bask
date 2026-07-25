@@ -1,8 +1,11 @@
+/** Treat unset or blank env values as missing (GitHub Actions sets empty strings). */
+function env(name: string, fallback = ""): string {
+  const value = process.env[name];
+  return value && value.trim() ? value.trim() : fallback;
+}
+
 /** Canonical public URL of the site, without a trailing slash. */
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
-  /\/+$/,
-  "",
-);
+export const siteUrl = env("NEXT_PUBLIC_SITE_URL", "http://localhost:3000").replace(/\/+$/, "");
 
 /**
  * Subdirectory the site is served from (Next `basePath`), e.g. `/Bask` on
@@ -10,7 +13,7 @@ export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:30
  * rewritten by Next itself. Do not prefix metadata image paths with this, or
  * they resolve twice (…/Bask/Bask/og.png).
  */
-export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/+$/, "");
+export const basePath = env("NEXT_PUBLIC_BASE_PATH").replace(/\/+$/, "");
 
 export const siteName = "Bask in Wardrobe";
 export const tagline = "A different outfit for every occasion";
