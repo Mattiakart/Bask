@@ -29,18 +29,22 @@ npm run lint
 npx tsc --noEmit                 # typecheck
 ```
 
-## Deploying on OVH (no npm on the host)
+## Deploying on OVH (no npm / nvm on the host)
 
-OVH shared hosting cannot run `npm`. Keep **`main`** as source code. Two other
-branches hold only the **built** site and are what you point OVH at:
+**Do not point OVH at `main`.** Shared hosting cannot run Node, npm, or nvm, so
+`main` (the Next.js source) will only show “Index of /” or a raw file listing.
 
-| Branch | Purpose |
-| --- | --- |
-| `cursor/test-site-2cf4` | Testing / staging domain |
-| `cursor/deploy-site-2cf4` | Production domain |
+Keep exactly three Git branches:
 
-On every push to `main`, GitHub Actions builds the site and force-updates both
-branches (`.github/workflows/publish-ovh-branches.yml`).
+| Branch | Contents | Point OVH here? |
+| --- | --- | --- |
+| `main` | Source code only | **No** |
+| `cursor/test-site-2cf4` | Prebuilt HTML/CSS/JS | Yes — test / staging |
+| `cursor/deploy-site-2cf4` | Prebuilt HTML/CSS/JS | Yes — production |
+
+GitHub Actions builds on every push to `main` and force-updates the two hosting
+branches (`.github/workflows/publish-ovh-branches.yml`). OVH only ever pulls
+those built branches — never runs a build.
 
 ### One-time OVH setup
 
