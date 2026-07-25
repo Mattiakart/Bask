@@ -7,17 +7,17 @@ import {
 } from "@/components/AppIcons";
 import { LogoGlyph } from "@/components/LogoMark";
 
-const TABS = ["armadio", "camera", "outfit", "eventi", "shopper", "profilo"] as const;
+const TABS = ["wardrobe", "camera", "outfit", "events", "shopper", "profile"] as const;
 
 export type TabName = (typeof TABS)[number];
 
 const ICONS: Record<TabName, (props: { className?: string }) => React.ReactNode> = {
-  armadio: ({ className }) => <LogoGlyph className={className} />,
+  wardrobe: ({ className }) => <LogoGlyph className={className} />,
   camera: ({ className }) => <CameraIcon className={className} />,
   outfit: ({ className }) => <DressFormIcon className={className} />,
-  eventi: ({ className }) => <CalendarCloudIcon className={className} />,
+  events: ({ className }) => <CalendarCloudIcon className={className} />,
   shopper: ({ className }) => <ChatIcon className={className} />,
-  profilo: ({ className }) => <ProfileIcon className={className} />,
+  profile: ({ className }) => <ProfileIcon className={className} />,
 };
 
 export function TabBar({ active }: { active: TabName }) {
@@ -30,7 +30,7 @@ export function TabBar({ active }: { active: TabName }) {
           return (
             <li key={tab} className="flex flex-col items-center gap-1">
               <span className={isActive ? "text-ink" : "text-muted/70"}>
-                <IconFor className={tab === "armadio" ? "h-[17px] w-[17px]" : "h-[19px] w-[19px]"} />
+                <IconFor className={tab === "wardrobe" ? "h-[17px] w-[17px]" : "h-[19px] w-[19px]"} />
               </span>
               <span
                 className={`h-[3px] w-[3px] rounded-full ${isActive ? "bg-accent" : "bg-transparent"}`}

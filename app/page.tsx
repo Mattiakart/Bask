@@ -20,16 +20,16 @@ export default function Home() {
 
         <FeatureSection
           index="01"
-          eyebrow="Armadio"
-          title="Tutto il tuo guardaroba, in tre schermate."
-          body="Fotografi capi e accessori una volta sola. Bask li ordina per categoria e stagione, li rende cercabili e te li mostra come sono: puliti, ritagliati, pronti da abbinare."
+          eyebrow="Wardrobe"
+          title="Your whole wardrobe, in three screens."
+          body="Photograph pieces and accessories once. Bask sorts them by category and season, makes them searchable, and shows them as they are: clean, cropped, ready to style."
           points={[
-            "Abbigliamento, scarpe, borse e accessori già divisi",
-            "Ricerca nel tuo armadio, non nel catalogo di qualcun altro",
-            "Filtri per stagione, colore e occasione",
+            "Clothes, shoes, bags, and accessories already sorted",
+            "Search your wardrobe — not someone else’s catalog",
+            "Filters for season, color, and occasion",
           ]}
           visual={
-            <PhoneFrame label="Anteprima della schermata Armadio con ricerca, filtri per categoria e griglia dei capi.">
+            <PhoneFrame label="Wardrobe screen preview with search, category filters, and a grid of garments.">
               <WardrobeScreen />
             </PhoneFrame>
           }
@@ -37,17 +37,17 @@ export default function Home() {
 
         <FeatureSection
           index="02"
-          eyebrow="Eventi e meteo"
-          title="Il calendario decide cosa metti. Il meteo lo conferma."
-          body="Collega un outfit a un evento e non ci pensi più. Bask legge l'agenda, guarda le previsioni della tua città e prepara il look prima che tu apra l'anta."
+          eyebrow="Events & weather"
+          title="Your calendar decides what you wear. The weather confirms it."
+          body="Link an outfit to an event and stop thinking about it. Bask reads your schedule, checks the forecast for your city, and has the look ready before you open the door."
           points={[
-            "Ogni evento con la sua temperatura e la sua ora",
-            "Look salvato in anticipo, modificabile fino all'ultimo",
-            "Suggerimenti che cambiano se cambia il tempo",
+            "Every event with its temperature and time",
+            "Looks saved ahead, editable until the last minute",
+            "Suggestions that shift when the weather does",
           ]}
           flip
           visual={
-            <PhoneFrame label="Anteprima della schermata Eventi con calendario di maggio, eventi del giorno e meteo per ciascuno.">
+            <PhoneFrame label="Events screen preview with a May calendar, today’s plans, and weather for each.">
               <EventsScreen />
             </PhoneFrame>
           }
@@ -55,26 +55,26 @@ export default function Home() {
 
         <FeatureSection
           index="03"
-          eyebrow="Memoria"
-          title="Ricorda cosa hai indossato, quando e dove."
-          body="Ogni look indossato finisce in archivio con data, luogo e occasione. Quando stai per ripetere lo stesso completo davanti alle stesse persone, Bask ti avvisa. Con garbo."
+          eyebrow="Memory"
+          title="It remembers what you wore, when and where."
+          body="Every look you wear is archived with date, place, and occasion. When you’re about to repeat the same outfit in front of the same people, Bask lets you know — gently."
           points={[
-            "Storico completo di capi e abbinamenti",
-            "Avviso gentile prima di un doppione",
-            "I capi che non tocchi mai, messi in evidenza",
+            "A full history of pieces and pairings",
+            "A polite nudge before a repeat",
+            "The pieces you never touch, brought into view",
           ]}
           visual={<MemoryVignette />}
         />
 
         <FeatureSection
           index="04"
-          eyebrow="Dal negozio all'armadio"
-          title="Compri in boutique, il capo è già nel tuo armadio."
-          body="Con i negozi partner non serve fotografare nulla: l'acquisto arriva nel guardaroba virtuale con taglia, materiale e colore. Tu esci dal negozio, il capo entra da solo."
+          eyebrow="From boutique to wardrobe"
+          title="Shop in boutique — the piece is already in your wardrobe."
+          body="With partner stores you don’t photograph a thing: the purchase lands in your digital wardrobe with size, fabric, and color. You leave the shop; the piece walks in on its own."
           points={[
-            "Nuovi acquisti sincronizzati dal negozio",
-            "Nessuna foto, nessun inserimento manuale",
-            "Scontrino digitale e scheda capo allegati",
+            "New purchases synced from the store",
+            "No photos, no manual entry",
+            "Digital receipt and garment card attached",
           ]}
           flip
           visual={<BoutiqueVignette />}
@@ -83,15 +83,15 @@ export default function Home() {
         <FeatureSection
           index="05"
           eyebrow="Bask Shopper"
-          title="Un'amica che ha sempre il look giusto."
-          body="Bask Shopper parte da quello che hai già. Ti scrive quando in agenda c'è qualcosa di importante, propone tre idee e ti dice perché funzionano. Se manca un pezzo, lo dice — senza insistere."
+          title="An AI companion that always has the right look."
+          body="Bask Shopper starts with what you already own. It writes when something important is on your calendar, offers three ideas, and explains why they work. If a piece is missing, it says so — without pushing."
           points={[
-            "Tre proposte per ogni occasione, dal tuo armadio",
-            "Conversazione, non un modulo da compilare",
-            "Consigli d'acquisto solo quando servono davvero",
+            "Three ideas for every occasion, from your wardrobe",
+            "A conversation, not a form to fill out",
+            "Shopping advice only when you truly need it",
           ]}
           visual={
-            <PhoneFrame label="Anteprima della chat con Bask Shopper che propone tre outfit per un matrimonio.">
+            <PhoneFrame label="Chat preview with Bask Shopper proposing three outfits for a wedding.">
               <ChatScreen />
             </PhoneFrame>
           }

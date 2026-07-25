@@ -17,7 +17,8 @@ const manrope = Manrope({
 });
 
 const title = `${siteName} — ${tagline}`;
-const social = "L'armadio che ricorda cosa hai indossato, quando e dove. La webapp sta arrivando.";
+const social =
+  "Your AI companion for what you wear. It remembers every look, reads your calendar and the weather, and helps you dress with intention.";
 const image = {
   // Absolute URL: root-relative `/og.png` would drop a path segment from
   // metadataBase on project Pages (user.github.io/Bask → …/og.png).
@@ -45,15 +46,15 @@ export const metadata: Metadata = {
     ],
   },
   keywords: [
-    "armadio digitale",
-    "guardaroba virtuale",
-    "outfit",
+    "AI stylist",
+    "digital wardrobe",
+    "outfit companion",
     "personal stylist",
     "Bask in Wardrobe",
   ],
   openGraph: {
     type: "website",
-    locale: "it_IT",
+    locale: "en_US",
     url: "./",
     siteName,
     title,
@@ -69,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it" className={`${bodoni.variable} ${manrope.variable} h-full antialiased`}>
+    <html lang="en" className={`${bodoni.variable} ${manrope.variable} h-full antialiased`}>
       <body className="grain-overlay flex min-h-full flex-col">{children}</body>
     </html>
   );
