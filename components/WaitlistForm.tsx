@@ -6,6 +6,14 @@ import { CheckIcon } from "@/components/AppIcons";
 
 type Status = "idle" | "pending" | "success" | "duplicate";
 
+/**
+ * Static builds have no server to post to, so they send signups to an external
+ * form service instead. Those services don't report duplicates, so a 2xx from
+ * one is simply a success.
+ */
+const endpoint = process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT;
+const target = endpoint || "/api/waitlist";
+
 export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel" }) {
   const fieldId = useId();
   const [email, setEmail] = useState("");
@@ -22,9 +30,9 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
     setError(null);
 
     try {
-      const response = await fetch("/api/waitlist", {
+      const response = await fetch(target, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ email }),
       });
 
@@ -37,6 +45,11 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
       if (!response.ok) {
         setStatus("idle");
         setError("Non è andata. Riprova tra un attimo.");
+        return;
+      }
+
+      if (endpoint) {
+        setStatus("success");
         return;
       }
 

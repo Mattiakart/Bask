@@ -4,16 +4,15 @@ import path from "node:path";
 import { ImageResponse } from "next/og";
 
 import { monogramDataUri } from "@/lib/monogram";
-import { tagline } from "@/lib/site";
+import { socialCard, tagline } from "@/lib/site";
+
+export const dynamic = "force-static";
 
 export const alt = `Bask in Wardrobe — ${tagline}`;
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
 
-const font = (file: string) =>
-  readFile(path.join(/* turbopackIgnore: true */ process.cwd(), "assets", "fonts", file));
+const font = (file: string) => readFile(path.join("assets", "fonts", file));
 
-export default async function OpengraphImage() {
+export async function GET() {
   const [bodoni, manrope] = await Promise.all([
     font("BodoniModa-Regular.ttf"),
     font("Manrope-Medium.ttf"),
@@ -52,6 +51,8 @@ export default async function OpengraphImage() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", alignItems: "flex-end" }}>
+            {/* Satori only accepts <img>; next/image is not available here. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={monogramDataUri()} width={152} height={195} alt="" />
             <div style={{ display: "flex", flexDirection: "column", marginLeft: 36 }}>
               <div
@@ -97,7 +98,8 @@ export default async function OpengraphImage() {
       </div>
     ),
     {
-      ...size,
+      width: socialCard.width,
+      height: socialCard.height,
       fonts: [
         { name: "Bodoni Moda", data: bodoni, style: "normal", weight: 400 },
         { name: "Manrope", data: manrope, style: "normal", weight: 500 },

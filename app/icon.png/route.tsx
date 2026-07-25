@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
 
 import { monogramDataUri } from "@/lib/monogram";
+import { favicon } from "@/lib/site";
 
-export const size = { width: 64, height: 64 };
-export const contentType = "image/png";
+export const dynamic = "force-static";
 
-export default function Icon() {
+export function GET() {
   return new ImageResponse(
     (
       <div
@@ -18,9 +18,11 @@ export default function Icon() {
           backgroundColor: "#ecedee",
         }}
       >
+        {/* Satori only accepts <img>; next/image is not available here. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={monogramDataUri({ withCats: false })} width={41} height={52} alt="" />
       </div>
     ),
-    size,
+    { width: favicon.size, height: favicon.size },
   );
 }
