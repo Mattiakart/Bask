@@ -1,20 +1,18 @@
 # Bask in Wardrobe — landing page
 
-Coming-soon landing page for the **Bask in Wardrobe** webapp: a digital wardrobe
-that remembers what you wore, when and where. The page announces the webapp,
-walks through the product, and collects email addresses for the launch waitlist.
-
-Copy is Italian-first with the English brand tagline (*A different outfit for
-every occasion*), matching the concept boards the design came from.
+Marketing site for **Bask in Wardrobe**, a stunning AI companion for what you
+wear. It remembers every look, reads your calendar and the weather, and helps
+you dress with intention. The page walks through the product and collects email
+addresses for people who want to get started.
 
 ## Stack
 
 - [Next.js](https://nextjs.org) 16 (App Router) + TypeScript
 - Tailwind CSS 4 — design tokens live in `@theme` inside `app/globals.css`
 - Bodoni Moda (display) and Manrope (UI) via `next/font`
-- No image assets in the page: the monogram, garment silhouettes and app screens
+- Brand logos live in `public/brand/` (official mark + lockup); garment silhouettes and app screens
   are all hand-authored SVG and markup, so everything stays sharp at any size.
-  The favicon and social card are generated from the same geometry at build time
+  Favicon and social card live in `public/` alongside the brand assets
 
 ## Running it
 
@@ -128,25 +126,18 @@ app/
   sitemap.ts              sitemap.xml
   api/waitlist/route.node.ts   signup endpoint (Node builds only)
 components/
-  LogoMark.tsx            monogram, small-size glyph, cat peek
+  LogoMark.tsx            official mark + lockup image components
   Garment.tsx             garment silhouettes by kind and tone
   AppIcons.tsx            UI icons used in the mockups
   phone/                  phone frame and the four app screens
   vignettes.tsx           archive and boutique-sync illustrations
 lib/
-  monogram.ts             monogram geometry, shared by all three renderers
   site.ts                 canonical URL and shared copy
   waitlist.ts             store
 assets/fonts/             TrueType copies for the social card, plus licences
 .github/workflows/        GitHub Pages deploy
 scripts/shoot.mjs         Playwright screenshot pass, for eyeballing changes
 ```
-
-The monogram lives as data in `lib/monogram.ts` because three renderers need
-it: the React components draw it as JSX, while the favicon and social card go
-through Satori, which only accepts SVG as an image source. Both image routes
-carry a `.png` extension so a static export writes real `icon.png` / `og.png`
-files that any file host serves with the right content type.
 
 ## Motion and accessibility
 

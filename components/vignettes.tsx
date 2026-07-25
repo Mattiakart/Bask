@@ -13,9 +13,9 @@ const WORN: {
 }[] = [
   {
     day: "12",
-    month: "Mag",
-    occasion: "Cena di lavoro",
-    place: "Milano, Brera",
+    month: "May",
+    occasion: "Work dinner",
+    place: "Milan, Brera",
     items: [
       { kind: "blazer", tone: "dark" },
       { kind: "trousers", tone: "light" },
@@ -24,9 +24,9 @@ const WORN: {
   },
   {
     day: "03",
-    month: "Mag",
+    month: "May",
     occasion: "Aperitivo",
-    place: "Milano, Navigli",
+    place: "Milan, Navigli",
     items: [
       { kind: "dress", tone: "dark" },
       { kind: "boot", tone: "dark" },
@@ -36,7 +36,7 @@ const WORN: {
   {
     day: "27",
     month: "Apr",
-    occasion: "Matrimonio",
+    occasion: "Wedding",
     place: "Como",
     items: [
       { kind: "gown", tone: "blush" },
@@ -52,9 +52,9 @@ export function MemoryVignette() {
       <div className="flex items-center justify-between">
         <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-muted">
           <ClockIcon className="h-4 w-4 text-accent" />
-          Archivio
+          Archive
         </p>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-muted">Ultimi look</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-muted">Recent looks</p>
       </div>
 
       <ul className="mt-5 divide-y divide-line">
@@ -84,7 +84,7 @@ export function MemoryVignette() {
 
       <p className="mt-5 flex items-start gap-2.5 rounded-2xl bg-accent-soft px-4 py-3 text-xs leading-relaxed text-ink-soft">
         <SparkleIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
-        Questo blazer l&apos;hai già portato a cena il 12 maggio. Con le stesse persone.
+        You already wore this blazer to dinner on May 12 — with the same people.
       </p>
     </div>
   );
@@ -101,22 +101,22 @@ export function BoutiqueVignette() {
 
       <div className="mt-7 border-t border-line pt-6">
         <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted">
-          Sincronizzazione
+          Sync
         </p>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
-          Il negozio carica direttamente i nuovi acquisti nel guardaroba virtuale.
+          The store loads new purchases straight into your digital wardrobe.
         </p>
       </div>
 
       <div className="mt-6 flex items-center gap-4 rounded-2xl bg-[#e7e3dc] px-4 py-3.5">
         <div className="min-w-0">
           <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-ink">
-            Nuovi acquisti
+            New purchases
           </p>
-          <p className="mt-1 text-xs text-ink-soft sm:truncate">3 capi aggiunti · Boutique Milano</p>
+          <p className="mt-1 text-xs text-ink-soft sm:truncate">3 pieces added · Boutique Milan</p>
         </div>
         <span className="ml-auto shrink-0 text-[9px] font-semibold uppercase tracking-[0.2em] text-accent-ink">
-          Vedi nuovi
+          View new
         </span>
       </div>
     </div>

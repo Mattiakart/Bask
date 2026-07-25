@@ -23,20 +23,20 @@ export function ChatScreen() {
       <div className="flex min-h-0 flex-1 flex-col justify-end gap-3 overflow-hidden py-4">
         <div className="shrink-0 max-w-[86%] rounded-2xl rounded-tl-md bg-[#eeece8] px-3.5 py-2.5">
           <p className="flex items-center gap-1 text-[11.5px] leading-relaxed text-ink">
-            Ciao Chiara!
+            Hi Chiara!
             <SparkleIcon className="h-3 w-3 text-accent" />
           </p>
           <p className="mt-1 text-[11.5px] leading-relaxed text-ink">
-            Hai un matrimonio il 24 maggio alle 6 PM. Vuoi che ti proponga qualche outfit?
+            You have a wedding on May 24 at 6 PM. Want a few outfit ideas?
           </p>
         </div>
 
         <div className="ml-auto w-fit shrink-0 max-w-[70%] rounded-2xl rounded-tr-md bg-ink px-3.5 py-2 text-right">
-          <p className="text-[11.5px] text-bg">Certo!</p>
+          <p className="text-[11.5px] text-bg">Yes please!</p>
         </div>
 
         <div className="shrink-0 max-w-[92%] rounded-2xl rounded-tl-md bg-[#eeece8] px-3.5 py-2.5">
-          <p className="text-[11.5px] leading-relaxed text-ink">Ecco 3 idee che potrebbero piacerti:</p>
+          <p className="text-[11.5px] leading-relaxed text-ink">Here are 3 ideas you might love:</p>
           <div className="mt-2.5 flex gap-2">
             <ChatLook kind="gown" tone="blush" />
             <ChatLook kind="dress" tone="dark" />
@@ -45,18 +45,18 @@ export function ChatScreen() {
         </div>
 
         <div className="ml-auto w-fit shrink-0 max-w-[70%] rounded-2xl rounded-tr-md bg-ink px-3.5 py-2 text-right">
-          <p className="text-[11.5px] text-bg">La seconda. Il nero non tradisce.</p>
+          <p className="text-[11.5px] text-bg">The second one. Black never fails.</p>
         </div>
 
         <div className="shrink-0 max-w-[86%] rounded-2xl rounded-tl-md bg-[#eeece8] px-3.5 py-2.5">
           <p className="text-[11.5px] leading-relaxed text-ink">
-            Salvato per il 24. Le scarpe le scegliamo giovedì.
+            Saved for the 24th. We’ll pick shoes on Thursday.
           </p>
         </div>
       </div>
 
       <div className="mb-[64px] flex items-center gap-2 rounded-full bg-[#f1f0ee] px-4 py-2.5 ring-1 ring-line">
-        <span className="flex-1 text-[11px] text-muted">Scrivi un messaggio…</span>
+        <span className="flex-1 text-[11px] text-muted">Write a message…</span>
         <SendIcon className="h-4 w-4 text-ink" />
       </div>
 

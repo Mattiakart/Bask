@@ -38,13 +38,13 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
 
       if (response.status === 422) {
         setStatus("idle");
-        setError("Controlla l'indirizzo: manca qualcosa.");
+        setError("Check the address — something’s missing.");
         return;
       }
 
       if (!response.ok) {
         setStatus("idle");
-        setError("Non è andata. Riprova tra un attimo.");
+        setError("That didn’t work. Try again in a moment.");
         return;
       }
 
@@ -57,7 +57,7 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
       setStatus(data.status === "duplicate" ? "duplicate" : "success");
     } catch {
       setStatus("idle");
-      setError("Connessione assente. Riprova tra un attimo.");
+      setError("No connection. Try again in a moment.");
     }
   }
 
@@ -72,12 +72,12 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
         </span>
         <div>
           <p className="text-sm font-semibold text-ink">
-            {status === "success" ? "Sei in lista." : "Eri già in lista."}
+            {status === "success" ? "You’re on the list." : "You’re already on the list."}
           </p>
           <p className="mt-1 text-sm text-ink-soft">
             {status === "success"
-              ? "Ti scriviamo appena la webapp apre le porte. Niente doppioni, promesso."
-              : "Tranquilla, non ti abbiamo dimenticata."}
+              ? "We’ll be in touch soon. No duplicates — promised."
+              : "No worries — we haven’t forgotten you."}
           </p>
         </div>
       </div>
@@ -88,7 +88,7 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
     <div>
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3 sm:flex-row">
         <label htmlFor={fieldId} className="sr-only">
-          Il tuo indirizzo email
+          Your email address
         </label>
         <input
           id={fieldId}
@@ -103,7 +103,7 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
             setEmail(event.target.value);
             if (error) setError(null);
           }}
-          placeholder="il.tuo.indirizzo@email.it"
+          placeholder="you@email.com"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           className={`${height} min-w-0 flex-1 rounded-full border border-line bg-surface/80 px-5 text-sm text-ink transition-colors placeholder:text-muted hover:border-ink/30 focus:border-ink focus:outline-none`}
@@ -113,7 +113,7 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
           disabled={status === "pending"}
           className={`${height} shrink-0 rounded-full bg-ink px-8 text-[10px] font-semibold uppercase tracking-[0.24em] text-bg transition-colors hover:bg-accent-ink disabled:cursor-not-allowed disabled:opacity-60`}
         >
-          {status === "pending" ? "Un attimo…" : "Unisciti alla waitlist"}
+          {status === "pending" ? "One moment…" : "Get started"}
         </button>
       </form>
 
@@ -123,7 +123,7 @@ export function WaitlistForm({ variant = "panel" }: { variant?: "hero" | "panel"
         </p>
       ) : (
         <p className="mt-3 text-xs text-muted">
-          Una sola email, quella del lancio. Niente newsletter, niente rumore.
+          One email — yours. No newsletter, no noise.
         </p>
       )}
     </div>

@@ -45,14 +45,14 @@ for (const viewport of VIEWPORTS) {
 const page = await browser.newPage({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 2 });
 await page.goto(BASE, { waitUntil: "networkidle" });
 
-const section = page.locator("#waitlist");
+const section = page.locator("#join");
 await section.scrollIntoViewIfNeeded();
 await section.getByRole("textbox").fill(`shoot-${Date.now()}@example.com`);
-await section.getByRole("button", { name: /waitlist/i }).click();
+await section.getByRole("button", { name: /get started/i }).click();
 await section.getByRole("status").waitFor({ timeout: 5000 });
 await page.waitForTimeout(600);
 await section.screenshot({ path: `${OUT}/waitlist-success.png` });
-console.log(`waitlist success: ${(await section.getByRole("status").innerText()).replace(/\n/g, " ")}`);
+console.log(`signup success: ${(await section.getByRole("status").innerText()).replace(/\n/g, " ")}`);
 await page.close();
 
 await browser.close();

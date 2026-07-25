@@ -2,7 +2,7 @@ import { CloudBagIcon, SearchIcon, SlidersIcon } from "@/components/AppIcons";
 import { Garment, type GarmentKind, type GarmentTone } from "@/components/Garment";
 import { TabBar } from "@/components/phone/TabBar";
 
-const FILTERS = ["Tutti", "Abbigliamento", "Scarpe", "Borse", "Accessori"];
+const FILTERS = ["All", "Clothes", "Shoes", "Bags", "Accessories"];
 
 const ITEMS: { kind: GarmentKind; tone: GarmentTone }[] = [
   { kind: "blazer", tone: "dark" },
@@ -25,7 +25,7 @@ export function WardrobeScreen() {
       <div className="flex items-center gap-2.5">
         <div className="flex h-9 flex-1 items-center gap-2 rounded-full bg-[#f1f0ee] px-3.5 ring-1 ring-line">
           <SearchIcon className="h-3.5 w-3.5 text-muted" />
-          <span className="text-[11px] text-muted">Cerca nel tuo armadio</span>
+          <span className="text-[11px] text-muted">Search your wardrobe</span>
         </div>
         <SlidersIcon className="h-[18px] w-[18px] text-ink-soft" />
       </div>
@@ -45,9 +45,9 @@ export function WardrobeScreen() {
 
       <div className="mt-3.5 flex items-center justify-between rounded-2xl bg-[#e7e3dc] px-3.5 py-3">
         <div>
-          <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-ink">Nuovi acquisti</p>
-          <p className="mt-1 text-[10px] text-ink-soft">Sincronizzati dal negozio</p>
-          <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-accent-ink">Vedi nuovi</p>
+          <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-ink">New purchases</p>
+          <p className="mt-1 text-[10px] text-ink-soft">Synced from the store</p>
+          <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-accent-ink">View new</p>
         </div>
         <CloudBagIcon className="h-11 w-11 text-ink" />
       </div>
@@ -63,7 +63,7 @@ export function WardrobeScreen() {
         ))}
       </div>
 
-      <TabBar active="armadio" />
+      <TabBar active="wardrobe" />
     </div>
   );
 }
