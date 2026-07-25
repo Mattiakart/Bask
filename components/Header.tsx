@@ -1,17 +1,11 @@
-import { LogoGlyph } from "@/components/LogoMark";
+import { LogoMark } from "@/components/LogoMark";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-line/70 bg-bg/75 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-3" aria-label="Bask in Wardrobe, back to top">
-          <LogoGlyph className="h-8 w-auto" />
-          <span className="font-display text-[13px] leading-none tracking-[0.3em] text-ink">
-            BASK
-            <span className="ml-2.5 hidden text-[9px] tracking-[0.36em] text-muted sm:inline">
-              IN WARDROBE
-            </span>
-          </span>
+        <a href="#top" className="flex items-center" aria-label="Bask in Wardrobe, back to top">
+          <LogoMark className="h-10 w-auto" />
         </a>
         <a
           href="#join"

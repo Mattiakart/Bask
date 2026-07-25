@@ -6,17 +6,18 @@ type LogoProps = {
   title?: string;
 };
 
-const markSrc = `${basePath}/brand/logo-mark.svg`;
+/** Official mark only — door-B with peeking cats. */
+const markSrc = `${basePath}/brand/logo-mark.png`;
+/** Official lockup only — mark + BASK / IN WARDROBE. */
 const lockupSrc = `${basePath}/brand/logo-lockup.png`;
 
 /**
- * Official Bask monogram (door-B with peeking cats).
- * One of two brand assets — compact placements only.
+ * Official Bask monogram image (one of two brand assets).
  */
 export function LogoMark({ className, title = "Bask in Wardrobe" }: LogoProps) {
   const decorative = title === "";
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- brand asset from /public
+    // eslint-disable-next-line @next/next/no-img-element -- brand PNG from /public
     <img
       src={markSrc}
       alt={decorative ? "" : title}
@@ -27,18 +28,17 @@ export function LogoMark({ className, title = "Bask in Wardrobe" }: LogoProps) {
   );
 }
 
-/** Compact glyph — same official mark. */
-export function LogoGlyph({ className, title = "" }: LogoProps) {
-  return <LogoMark className={className} title={title} />;
+/** Compact placements — same official mark image. */
+export function LogoGlyph(props: LogoProps) {
+  return <LogoMark {...props} title={props.title ?? ""} />;
 }
 
 /**
- * Official full lockup: mark + BASK / IN WARDROBE + copper rule.
- * Second of two brand assets — hero and footer.
+ * Official full lockup image (second of two brand assets).
  */
 export function LogoLockup({ className, title = "Bask in Wardrobe" }: LogoProps) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- brand asset from /public
+    // eslint-disable-next-line @next/next/no-img-element -- brand PNG from /public
     <img src={lockupSrc} alt={title} className={className} draggable={false} />
   );
 }
