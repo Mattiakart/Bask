@@ -1,4 +1,4 @@
-import { LogoMark } from "@/components/LogoMark";
+import { CatPeek } from "@/components/CatPeek";
 import { Reveal } from "@/components/Reveal";
 
 export function PromiseBand() {
@@ -19,8 +19,8 @@ export function PromiseBand() {
         </Reveal>
       </div>
 
-      <Reveal variant="peek" className="mx-auto flex max-w-xs justify-center px-6 opacity-40">
-        <LogoMark className="h-24 w-auto brightness-0 invert" title="" />
+      <Reveal variant="peek" className="mx-auto max-w-2xl px-6">
+        <CatPeek className="w-full text-bg/55" />
       </Reveal>
       <div className="h-14" />
     </section>
